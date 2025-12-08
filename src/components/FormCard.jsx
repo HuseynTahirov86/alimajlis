@@ -94,6 +94,19 @@ const FormCard = ({
             </div>
           </div>
 
+          <div className="space-y-2">
+            <label className="block text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">Seçicilər</label>
+            <input
+              type="text"
+              name="voters"
+              value={formData.voters}
+              onChange={onChange}
+              placeholder="Məs: 59-cu məhəllə, Cəhri qəsəbə, Ordubad rayon"
+              className="w-full rounded-xl border border-slate-600/70 bg-slate-950/70 px-4 py-2.5 text-sm md:text-base text-slate-50 placeholder:text-slate-500 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/40"
+            />
+          </div>
+
+
           {/* Ünvan */}
           <div className="space-y-2">
             <label className="block text-xs font-semibold uppercase tracking-[0.2em] text-slate-400">

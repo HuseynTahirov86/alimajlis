@@ -102,6 +102,7 @@ export default function PosterGenerator() {
     deputyName: "",
     city: "", // rayon / şəhər
     district: "", // seçki dairəsi (tam mətn)
+    voters: "",
     address: "",
     date: "",
     time: "",
@@ -162,8 +163,8 @@ export default function PosterGenerator() {
         ? formData.district.replace("seçki dairəsi", "seçki dairəsindən")
         : "";
 
-      const line2 = "Naxçıvan Muxtar Respublikası Ali Məclisinin";
-      const line3 = `deputatı ${formData.deputyName} vətəndaşları qəbul edəcək`;
+      const line2 = "Naxçıvan Muxtar Respublikası Ali Məclisinin deputatı";
+      const line3 = `${formData.deputyName} ${formData.voters} sakinlərini qəbul edəcək`;
 
       const baseY = canvas.height * 0.34;
       const lh = 110; // 100px font üçün line height
@@ -231,9 +232,9 @@ export default function PosterGenerator() {
   };
 
   const handleSubmit = () => {
-    const { deputyName, city, district, address, date, time } = formData;
+    const { deputyName, city, district, address, date, time, voters } = formData;
 
-    if (!deputyName || !city || !district || !address || !date || !time) {
+    if (!deputyName || !city || !district || !address || !date || !time || !voters) {
       alert("Zəhmət olmasa bütün xanaları doldurun.");
       return;
     }
@@ -241,6 +242,7 @@ export default function PosterGenerator() {
     setShowPoster(true);
     setTimeout(generatePoster, 150);
   };
+
 
   const downloadPoster = () => {
     const canvas = canvasRef.current;

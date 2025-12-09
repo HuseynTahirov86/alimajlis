@@ -29,10 +29,9 @@ const cities = [
 
 // Rayon → seçki dairələri
 const districtsByCity = {
-  "Sədərək rayonu": ["1 saylı Sədərək seçki dairəsi"],
+  "Sədərək rayonu": ["1 saylı Sədərək seçki dairəsi", "2 saylı Dəmirçi seçki dairəsi"],
 
   "Şərur rayonu": [
-    "2 saylı Dəmirçi seçki dairəsi",
     "3 saylı Maxta seçki dairəsi",
     "4 saylı Yengicə seçki dairəsi",
     "5 saylı Çomaxtur seçki dairəsi",

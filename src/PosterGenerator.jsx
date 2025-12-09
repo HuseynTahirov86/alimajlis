@@ -35,6 +35,7 @@ const districtsByCity = {
     "3 saylı Maxta seçki dairəsi",
     "4 saylı Yengicə seçki dairəsi",
     "5 saylı Çomaxtur seçki dairəsi",
+    "6 saylı Çərçiboğan seçki dairəsi",
     "7 saylı Xanlıqlar seçki dairəsi",
     "8 saylı Düdəngə seçki dairəsi",
     "9 saylı Mahmudkənd seçki dairəsi",
@@ -51,7 +52,6 @@ const districtsByCity = {
   ],
 
   "Babək rayonu": [
-    "6 saylı Çərçiboğan seçki dairəsi",
     "17 saylı Nehrəm seçki dairəsi",
     "18 saylı Nehrəm seçki dairəsi",
     "19 saylı Babək şəhər seçki dairəsi",

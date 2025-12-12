@@ -261,7 +261,7 @@ lines3.forEach(line => {
 });
 
 // ===================== ÜNVAN (Avtomatik ölçü və yeni sətrə keçmə) =====================
-const addressMaxWidth = canvas.width * 0.5; // Ünvan üçün genişlik limiti
+const addressMaxWidth = canvas.width * 0.41; // Ünvan üçün genişlik limiti
 
 // Ünvanı sətrlərə böl
 function wrapAddress(text, maxWidth, fontSize) {

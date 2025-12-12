@@ -153,33 +153,187 @@ export default function PosterGenerator() {
 
       ctx.fillStyle = "#FFFFFF";
 
-      // ===================== YUXARI BLOK (100px) =====================
-      ctx.textAlign = "center";
-      ctx.font = 'bold 100px "Poppins", sans-serif';
+      // ===================== YUXARI BLOK (Yeni sətrə keçəndə 90px) =====================
+ctx.textAlign = "center";
 
-      // "32 saylı Naxçıvan şəhər seçki dairəsindən"
-      const districtLine = formData.district
-        ? formData.district.replace("seçki dairəsi", "seçki dairəsindən")
-        : "";
+// "32 saylı Naxçıvan şəhər seçki dairəsindən"
+const districtLine = formData.district
+  ? formData.district.replace("seçki dairəsi", "seçki dairəsindən")
+  : "";
 
-      const line2 = "Naxçıvan Muxtar Respublikası Ali Məclisinin deputatı";
-      const line3 = `${formData.deputyName} ${formData.voters} sakinlərini qəbul edəcək`;
+const line2 = "Naxçıvan Muxtar Respublikası Ali Məclisinin deputatı";
+const line3 = `${formData.deputyName} ${formData.voters} sakinlərini qəbul edəcək`;
 
-      const baseY = canvas.height * 0.34;
-      const lh = 110; // 100px font üçün line height
+const maxWidth = canvas.width * 0.9; // 90% genişlik
 
-      ctx.fillText(districtLine, centerX, baseY);
-      ctx.fillText(line2, centerX, baseY + lh);
-      ctx.fillText(line3, centerX, baseY + lh * 2);
+// Mətn sətrlərə bölünmə funksiyası
+function wrapTextToLines(text, maxWidth, fontSize) {
+  ctx.font = `bold ${fontSize}px "Poppins", sans-serif`;
+  const words = text.split(' ');
+  const lines = [];
+  let currentLine = '';
 
-      // ===================== ÜNVAN (ŞƏHƏRSİZ, 100px) =====================
-      ctx.font = '80px "Poppins", sans-serif';
-      ctx.textAlign = "center";
-      ctx.fillText(
-        formData.address, // yalnız ünvan
-        canvas.width * 0.7,
-        canvas.height * 0.5075
-      );
+  for (let word of words) {
+    const testLine = currentLine ? `${currentLine} ${word}` : word;
+    const metrics = ctx.measureText(testLine);
+    
+    if (metrics.width > maxWidth && currentLine) {
+      lines.push(currentLine);
+      currentLine = word;
+    } else {
+      currentLine = testLine;
+    }
+  }
+  
+  if (currentLine) {
+    lines.push(currentLine);
+  }
+  
+  return lines;
+}
+
+// 100px-də hər hansı sətir bölünür mü?
+function needsWrapping(texts, maxWidth, fontSize) {
+  for (let text of texts) {
+    const lines = wrapTextToLines(text, maxWidth, fontSize);
+    if (lines.length > 1) {
+      return true; // Biri belə bölünürsə, 90px-ə keç
+    }
+  }
+  return false;
+}
+
+// Əvvəlcə 100px yoxla
+let optimalFontSize = 100;
+
+if (needsWrapping([districtLine, line2, line3], maxWidth, 100)) {
+  // Hər hansı sətir bölünürsə, hamısını 90px et
+  optimalFontSize = 90;
+  
+  // 90px-də də çox uzun olarsa, daha da kiçilt
+  let totalLinesAt90 = 0;
+  for (let text of [districtLine, line2, line3]) {
+    totalLinesAt90 += wrapTextToLines(text, maxWidth, 90).length;
+  }
+  
+  if (totalLinesAt90 > 6) {
+    // Çox uzunsa, daha da kiçilt
+    for (let fontSize = 85; fontSize >= 50; fontSize -= 5) {
+      let totalLines = 0;
+      for (let text of [districtLine, line2, line3]) {
+        totalLines += wrapTextToLines(text, maxWidth, fontSize).length;
+      }
+      
+      if (totalLines <= 6) {
+        optimalFontSize = fontSize;
+        break;
+      }
+    }
+  }
+}
+
+ctx.font = `bold ${optimalFontSize}px "Poppins", sans-serif`;
+const lineHeight = optimalFontSize * 1.2;
+const baseY = canvas.height * 0.34;
+
+// Hər sətiri yaz (lazım olsa wrap et)
+let currentY = baseY;
+
+// 1-ci sətir
+const lines1 = wrapTextToLines(districtLine, maxWidth, optimalFontSize);
+lines1.forEach(line => {
+  ctx.fillText(line, centerX, currentY);
+  currentY += lineHeight;
+});
+
+// 2-ci sətir
+const lines2 = wrapTextToLines(line2, maxWidth, optimalFontSize);
+lines2.forEach(line => {
+  ctx.fillText(line, centerX, currentY);
+  currentY += lineHeight;
+});
+
+// 3-cü sətir
+const lines3 = wrapTextToLines(line3, maxWidth, optimalFontSize);
+lines3.forEach(line => {
+  ctx.fillText(line, centerX, currentY);
+  currentY += lineHeight;
+});
+
+// ===================== ÜNVAN (Avtomatik ölçü və yeni sətrə keçmə) =====================
+const addressMaxWidth = canvas.width * 0.5; // Ünvan üçün genişlik limiti
+
+// Ünvanı sətrlərə böl
+function wrapAddress(text, maxWidth, fontSize) {
+  ctx.font = `${fontSize}px "Poppins", sans-serif`;
+  const words = text.split(' ');
+  const lines = [];
+  let currentLine = '';
+
+  for (let word of words) {
+    const testLine = currentLine ? `${currentLine} ${word}` : word;
+    const metrics = ctx.measureText(testLine);
+    
+    if (metrics.width > maxWidth && currentLine) {
+      lines.push(currentLine);
+      currentLine = word;
+    } else {
+      currentLine = testLine;
+    }
+  }
+  
+  if (currentLine) {
+    lines.push(currentLine);
+  }
+  
+  return lines;
+}
+
+// 80px-də bölünür mü yoxla
+let addressFontSize = 80;
+ctx.font = `${addressFontSize}px "Poppins", sans-serif`;
+
+const addressLinesAt80 = wrapAddress(formData.address, addressMaxWidth, 80);
+
+// Əgər 80px-də bölünürsə, 70px-ə keç
+if (addressLinesAt80.length > 1) {
+  addressFontSize = 70;
+  
+  // 70px-də də çox uzunsa, daha da kiçilt
+  const addressLinesAt70 = wrapAddress(formData.address, addressMaxWidth, 70);
+  
+  if (addressLinesAt70.length > 2) {
+    // Maksimum 2 sətir olsun, daha da kiçilt
+    for (let fontSize = 65; fontSize >= 50; fontSize -= 5) {
+      const lines = wrapAddress(formData.address, addressMaxWidth, fontSize);
+      
+      if (lines.length <= 2) {
+        addressFontSize = fontSize;
+        break;
+      }
+    }
+  }
+}
+
+// Ünvan sətrlərini hazırla
+const addressLines = wrapAddress(formData.address, addressMaxWidth, addressFontSize);
+const finalAddressLines = addressLines.slice(0, 2); // Maksimum 2 sətir
+
+ctx.font = `${addressFontSize}px "Poppins", sans-serif`;
+ctx.textAlign = "center";
+
+const addressY = canvas.height * 0.5075;
+
+// Ünvanı çap et
+if (finalAddressLines.length === 1) {
+  // Tək sətir
+  ctx.fillText(finalAddressLines[0], canvas.width * 0.7, addressY);
+} else {
+  // İki sətir
+  const lineSpacing = addressFontSize * 1.1;
+  ctx.fillText(finalAddressLines[0], canvas.width * 0.7, addressY - lineSpacing/2);
+  ctx.fillText(finalAddressLines[1], canvas.width * 0.7, addressY + lineSpacing/2);
+}
 
       // ===================== ALT PANEL: TARİX, İL, SAAT, NÖV =====================
       ctx.font = 'bold 73px "Poppins", sans-serif';

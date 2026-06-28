@@ -2,6 +2,7 @@ import React from "react";
 import PosterGenerator from "./PosterGenerator";
 import { Toaster } from "sonner";
 import { motion } from "framer-motion";
+
 export default function App() {
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden bg-slate-950">
@@ -38,10 +39,13 @@ export default function App() {
           className="absolute -bottom-40 left-1/3 h-80 w-80 rounded-full bg-indigo-600/20 blur-[100px]"
         />
       </div>
+
       <Toaster theme="dark" position="top-center" richColors />
+
       <div className="flex-grow z-10 relative">
         <PosterGenerator />
       </div>
+
       <motion.footer
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}

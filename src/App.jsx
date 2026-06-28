@@ -2,7 +2,6 @@ import React from "react";
 import PosterGenerator from "./PosterGenerator";
 import { Toaster } from "sonner";
 import { motion } from "framer-motion";
-
 export default function App() {
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden bg-slate-950">
@@ -39,14 +38,11 @@ export default function App() {
           className="absolute -bottom-40 left-1/3 h-80 w-80 rounded-full bg-indigo-600/20 blur-[100px]"
         />
       </div>
-
       <Toaster theme="dark" position="top-center" richColors />
-
       <div className="flex-grow z-10 relative">
         <PosterGenerator />
       </div>
-
-      <motion.footer 
+      <motion.footer
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1, duration: 0.8 }}
@@ -60,6 +56,20 @@ export default function App() {
           <p className="text-[10px] md:text-xs font-bold tracking-[0.2em] text-slate-600/80">
             © 2026
           </p>
+          <div className="w-8 h-[1px] bg-slate-800/80 rounded-full"></div>
+          
+            href="https://www.instagram.com/huseyntahirov_/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-2 text-[10px] md:text-xs tracking-[0.2em] text-slate-600/50 hover:text-slate-400/70 transition-all duration-500 uppercase"
+          >
+            <span className="w-4 h-[1px] bg-slate-700/50 group-hover:bg-blue-500/40 transition-colors duration-500"></span>
+            <span className="font-light">developed by</span>
+            <span className="font-semibold text-slate-500/60 group-hover:text-blue-400/60 transition-colors duration-500">
+              Hüseyn Tahirov
+            </span>
+            <span className="w-4 h-[1px] bg-slate-700/50 group-hover:bg-blue-500/40 transition-colors duration-500"></span>
+          </a>
         </div>
       </motion.footer>
     </div>

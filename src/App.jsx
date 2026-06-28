@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 export default function App() {
   return (
     <div className="min-h-screen flex flex-col relative overflow-hidden bg-slate-950">
-      {/* Animated Orbs Background */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <motion.div
           animate={{
@@ -58,7 +57,7 @@ export default function App() {
             Naxçıvan Muxtar Respublikasının Ali Məclisi
           </p>
           <p className="text-[10px] md:text-xs font-bold tracking-[0.2em] text-slate-600/80">
-            © 2026
+            &copy; 2026
           </p>
           <div className="w-8 h-[1px] bg-slate-800/80 rounded-full"></div>
           
